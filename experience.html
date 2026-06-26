@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dhandha School | Interactive Experience</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="nav-header">
+      <a href="./index.html" class="logo">DHANDHA SCHOOL</a>
+      <nav class="nav-links">
+        <a href="./index.html" class="nav-pill pill-ghost">← BACK</a>
+        <a href="./index.html#pricing" class="nav-pill pill-gold">RESERVE MY SEAT</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="experience-intro">
+        <div class="section-header">
+          <h2 class="font-hakobi highlight-gold">THE FUN GAME</h2>
+          <p>Scroll slowly. Watch it grow.</p>
+        </div>
+      </section>
+
+      <!-- LAPTOP RENDER (SCROLL SCALE) -->
+      <div class="laptop-scroll-wrapper">
+        <div class="laptop-sticky">
+          <section class="laptop-section">
+            <div class="laptop-render">
+              <div class="laptop-screen">
+                <div class="laptop-display">
+                  <div id="laptop-interactive-area"></div>
+                </div>
+              </div>
+              <div class="laptop-base">
+                <div class="laptop-notch"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <section class="experience-outro">
+        <div class="section-header">
+          <h2 class="font-hakobi">THAT'S THE IDEA.</h2>
+          <p>Start small. Build something that scales.</p>
+        </div>
+        <div class="pricing-wrapper">
+          <a href="./index.html#pricing" class="cta">RESERVE MY SEAT</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>© 2026 DHANDHA SCHOOL · MADE IN INDIA · ALL RIGHTS RESERVED</p>
+    </footer>
+
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+    <script>
+      const lenis = new Lenis();
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+
+      // Laptop scale-on-scroll
+      const laptopWrapper = document.querySelector('.laptop-scroll-wrapper');
+      const laptopSticky = document.querySelector('.laptop-sticky');
+      const laptopRender = document.querySelector('.laptop-render');
+
+      if (laptopWrapper && laptopSticky && laptopRender) {
+        lenis.on('scroll', () => {
+          const rect = laptopWrapper.getBoundingClientRect();
+          const stickyTop = parseInt(window.getComputedStyle(laptopSticky).top) || 0;
+          const amountScrolled = stickyTop - rect.top;
+          const maxScroll = laptopWrapper.offsetHeight - window.innerHeight;
+
+          if (amountScrolled >= 0 && amountScrolled <= maxScroll) {
+            const progress = amountScrolled / maxScroll;
+            laptopRender.style.setProperty('--laptop-scale', 1 + progress * 30);
+          } else if (amountScrolled < 0) {
+            laptopRender.style.setProperty('--laptop-scale', 1);
+          } else {
+            laptopRender.style.setProperty('--laptop-scale', 31);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
